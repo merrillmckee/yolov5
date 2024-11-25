@@ -409,7 +409,7 @@ def train(hyp, opt, device, callbacks):
                     imgs = nn.functional.interpolate(imgs, size=ns, mode="bilinear", align_corners=False)
 
             # Forward
-            with torch.amp.autocast('cuda', amp):
+            with torch.amp.autocast('cuda', enabled=amp):
                 pred = model(imgs)  # forward
                 loss, loss_items = compute_loss(pred, targets.to(device))  # loss scaled by batch_size
                 if RANK != -1:
@@ -981,6 +981,21 @@ def run(**kwargs):
     return opt
 
 
+# if __name__ == "__main__":
+#     opt = parse_opt()
+#     main(opt)
+
+
 if __name__ == "__main__":
+    import torch
+    print(torch.mps.get_rng_state())
+
+    import yaml
+    with open('../data/nba1022/data.yaml', 'r') as stream:
+        num_classes = int(yaml.safe_load(stream)['nc'])
+    print(f"{num_classes=}")
+
+    # Run with the following command line arguments or similar
+    # --img 640 --batch 32 --epochs 2 --data ../data/nba1022/data.yaml --weights yolov5m.pt --name yolov5m_nba1022_results_1 --device=mps
     opt = parse_opt()
     main(opt)
