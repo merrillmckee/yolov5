@@ -987,6 +987,9 @@ def run(**kwargs):
 
 
 if __name__ == "__main__":
+    # params
+    # --img 640 --batch 16 --epochs 2 --data ../data/nba1022/data.yaml --weights yolov5l.pt --name yolov5m_nba1022_results_
+
     import torch
     print(torch.mps.get_rng_state())
 
